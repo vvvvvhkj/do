@@ -17,12 +17,14 @@ console.log(logo);
 
 function linked() {
   const sg = '2';
+  const concurrency = 1000; // Number of concurrent attacks
+
   if (sg === '1') {
-    for (let i = 0; i < 50000; i++) {
+    for (let i = 0; i < concurrency; i++) {
       AttackMahos();
     }
   } else if (sg === '2') {
-    for (let i = 0; i < 500000000000; i++) {
+    for (let i = 0; i < concurrency; i++) {
       ProxyAttack();
     }
   }
